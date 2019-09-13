@@ -1,0 +1,196 @@
+* {
+    margin: 0px;
+    padding: 0px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    background-color: #26292F;
+}
+
+.wrapper {
+    width: 95%;
+    margin:0 auto;
+}
+
+.main {
+    background-color: #d1dae8;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    width: 80%;
+    height: 90%;
+    box-shadow: 0 0 199px 10px #fff;
+    min-height: 735px;
+}
+ 
+.header__wrapper {
+    display:flex;
+    justify-content: space-between;
+    padding:10px;
+}
+
+.logout {
+    text-decoration: none;
+    text-align: center;
+}
+
+.header {
+    background-color: #397A94; 
+    color: #fff;
+}
+
+.btn {
+    border: 0;
+    padding: 3px;
+    background-color: #35A298;
+    color: #fff;
+    width: 120px;
+    padding: 7px 0 7px 0;
+    text-transform: uppercase;
+    border-radius: 3px; display:inline-block;
+    cursor: pointer; 
+    outline: none;
+}
+
+.btn:hover {
+    background-color: orange;
+}
+
+.mainWindow {
+  position: absolute;
+  width: 100%;
+  height: 85%;
+}
+
+.mainWindow__wrapper {
+    height: 100%;
+}
+
+.buttons {
+    width: 15%;
+    position: absolute; 
+    height: 20%;
+    background-color: #397A94;
+    display: inline-block;
+    box-shadow: 0 0 10px #000;
+    min-height: 176px;
+    top: 2%;
+}
+
+.buttons__btn{
+    width: 100px;
+    display: inline-block;
+    position: relative;
+    
+}
+
+.buttons__btn_user {
+    left: 50%;
+    top: 20%; 
+    transform: translate(-50%);
+    display: block;
+}
+
+.buttons__btn_chat {
+    top: 30%;
+    left: 50%; 
+    transform: translate(-50%);
+    display: block;
+}
+
+.users__title {
+    display: flex;
+    text-transform: uppercase;
+    justify-content: space-around;
+    margin-bottom: 10px;
+}
+
+.users__info {
+   flex: 1;
+   text-align: center;
+   background-color: #397a94;
+   color: white;
+   padding: 10px;
+}
+
+.users__card {
+    width: 95%;
+    margin: 0 auto;
+    height: 7%;
+    background-color: #397A94;
+    display: flex;
+    font-size: 25px;
+}
+
+.content {
+    width: 75%;
+    position: absolute;
+    left: 20%;
+    display: inline-block;
+    background-color: #D2DADF;
+    border: 1px solid #397A94;
+    height: 100%;
+    top: 2%;
+    min-height: 642px;
+    min-width: 600px;
+}
+
+.footer {
+    position: absolute;
+    padding: 0 10px 0 10px;
+    display: flex;
+    bottom:10px;
+}
+
+.textMassage {
+    max-width: 900px;
+    min-width: 500px;
+    height: 70px;
+    font-size: 18px;
+    outline: none;
+    border: 1px solid transparent;
+}
+
+.massageField {
+    width: 97%;
+    height: 85%;
+    position: relative;
+    overflow: auto;
+    margin: 0 auto;
+    scrollbar-width: none;
+}
+
+.textMassage:focus {
+    border:1px solid orange;
+}
+
+.massage {
+   width: 70%;
+   background-color: #A3E8A5;
+   margin: 5px;
+   padding: 10px;
+}
+
+.massage__name {
+    color: red;
+    font-size: 17px;
+}
+
+.massage__text {
+    color: #fff;
+}
+
+.massage__email{
+    color: red;
+    font-size: 14px;
+}
+
+.massage__time{
+    color:grey;
+    font-size:10px;
+}
+
+
+
