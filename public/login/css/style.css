@@ -1,0 +1,136 @@
+* {
+    margin: 0px;
+    padding: 0px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    background-color :#26292F;
+}
+
+.login-wrapper {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #d1dae8;
+    box-shadow: 0 0 399px 90px #fff;
+    display: flex;
+    flex-direction: column;
+    width: 23%;
+    height: 30%;
+    justify-content: space-around;
+    min-width: 460px;
+    min-height: 390px;
+}
+
+.login-form{
+    flex:5;
+    transform: translate(0,10%);
+}
+
+.login-form__label {
+    display: inline-block;
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, -65%);
+ }
+
+.login-form__input {
+    display: block;
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #b3bcc9;
+    border: 0;
+    padding: 10px;
+    box-shadow: inset 0 0 3px #000;
+    margin-top: 10px;
+    border-radius: 6px;
+    outline: none;
+}
+
+.buttons {
+    border-bottom: 1px solid grey;
+    padding: 5px 0 5px 0;
+    background-color: #D9DDE0;
+    text-align: center;
+    flex:1;
+}
+
+.btn {
+    border: 0;
+    padding: 3px;
+    background-color: #35A298;
+    color: #fff;
+    width: 35%;
+    padding: 7px 0 7px 0;
+    text-transform: uppercase;
+    border-radius: 3px; display:inline-block;
+    cursor: pointer;
+}
+
+.login-form__btn {
+   position: relative;
+   left: 50%;
+   transform: translate(-50%)
+}
+.btn:hover {
+    background-color: orange;
+}
+
+.buttons__btn {
+    width: 15%;
+    position: relative;
+    transform: translate(0,50%);
+    display: inline-block;
+    text-decoration: none;
+ }
+
+.buttons__btn_active {
+    background-color: orange;
+}
+
+.modalBackground {
+    position:fixed;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background-color:#000;
+    z-index: 5;
+    opacity: 0.4;
+}
+
+.modal-window {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    width: 25%;
+    height: 15%;
+    min-height: 174px;
+    z-index: 10;
+    background-color: #fff;
+}
+
+.modal-window__close {
+    position: absolute;
+    bottom: 5%;
+    left:50%;
+    transform: translate(-50%,0)
+}
+
+.modal-window__error {
+    position:absolute;
+    left:50%;
+    top:30%;
+    width:80%;
+    transform: translate(-50% , 0);
+    font-size: 20px;
+    text-align: center;
+}
+
+.visible {
+    display: none;
+}

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Main</title>
+    <link rel="stylesheet" type="text/css" href="./css/style.css">
+    <link rel="shortcut icon" href="#"/>
+</head>
+
+<body>
+
+    <div class="main">
+
+        <div class="header">
+            <div class="wrapper header__wrapper">
+                <div class="info">
+                    <p>Name: <span class="info__name"></span></p>
+                    <p>E-mail: <span class="info__email"></span></p>
+                </div>
+
+                <a href="#" class="btn logout" id="logOut">log out</a>
+            </div>
+        </div>
+
+        <div class="mainWindow">
+
+            <div class="wrapper mainWindow__wrapper">
+                <div class="buttons">
+                    <button class="btn buttons__btn buttons__btn_user" id="getUsers">users</button>
+                    <button class="btn buttons__btn buttons__btn_chat" id="getChat">chat</button>
+                </div>
+            </div>
+                <div class="content"></div>
+        </div>
+    </div>
+
+    <script src="https://cdn.socket.io/socket.io-1.2.1.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="./src/modelMain.js"></script>
+    <script src="./src/controllerMain.js"></script>
+    <script src="./src/viewMain.js"></script>
+    <script src="./src/message.js"></script>
+    <script>
+        window.addEventListener('load', () => {
+            new MainController(new MainModel(), new MainView()).init();
+
+        });
+    </script>
+</body>
+</html>
