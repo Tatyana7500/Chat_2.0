@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" type="text/css" href="./css/style.css">
+    <link rel="shortcut icon" href="#"/>
+</head>
+<body>
+
+    <div class="login-wrapper">
+
+        <div class="buttons">
+            <a href="login.html" class="btn buttons__btn buttons__btn_active" id="loginBtn">login</a>
+            <a href="../signin/signin.html" class="btn buttons__btn buttons__btn" id="singInBtn">sing in</a>
+        </div>
+
+        <div class="login-form">
+
+            <label for="loginPageEmailInput" class="login-form__label" name="Email">Your e-mail</label>
+            <input type="text" class="login-form__input" maxlength="16" placeholder="E-mail" id="loginPageEmailInput" required>
+
+            <label for="loginPagePasswordInput" class="login-form__label" name="password">Your Password</label>
+            <input type="password" class="login-form__input" maxlength="16" placeholder="Password" id="loginPagePasswordInput" required>
+
+            <input type="submit" value="login" class="btn login-form__btn" id="enterAccount">
+        </div>
+
+
+    </div>
+
+    <div class ="modalBackground visible" id="modalBackground"></div>
+    <div class="modal-window visible" id="modalWindow">
+        <span class="modal-window__error" id="typeText"></span>
+        <button class="btn modal-window__close" id="close">Close</button>
+    </div>
+
+    <script src="./src/controllerLogin.js"></script>
+    <script src="./src/viewLogin.js"></script>
+    <script>
+        window.addEventListener('load', () => {
+            new LoginController(new LoginView());
+        });
+    </script>
+</body>
+</html>

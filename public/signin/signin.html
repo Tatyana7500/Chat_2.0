@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Sign in</title>
+    <link rel="stylesheet" type="text/css" href="./css/style.css">
+    <link rel="shortcut icon" href="#"/>
+</head>
+
+<body>
+
+    <div class="singin-wrapper">
+
+        <div class="buttons">
+            <a href="../login/login.html" class="btn buttons__btn" id="singin_loginBtn">login</a>
+            <a href="signin.html" class="btn buttons__btn buttons__btn  buttons__btn_active" id="singin_singInBtn">sing in</a>
+        </div>
+
+        <div class="singin-form">
+
+            <label for="singinPageEmailInput" class="singin-form__label" name="Email">Your e-mail</label>
+            <input type="text" class="singin-form__input" maxlength="16" placeholder="E-mail" id="singinPageEmailInput">
+
+            <label for="singinPageNameInput" class="singin-form__label" name="name">Your name</label>
+            <input type="text" class="singin-form__input" maxlength="16" placeholder="Name" id="singinPageNameInput">
+
+            <label for="singinPagePasswordInput" class="singin-form__label" name="password">Your Password</label>
+            <input type="password" class="singin-form__input" maxlength="16" placeholder="Password" id="singinPagePasswordInput">
+
+            <label for="singinPageComfirmPasswordInput" class="singin-form__label" name="password">Comfirm your Password</label>
+            <input type="password" class="singin-form__input" maxlength="16" placeholder="ComfirmPassword" id="singinPageComfirmPasswordInput">
+
+            <input type="submit" value="sing in" class="btn singin-form__btn" id="regAccount">
+
+        </div>
+
+    </div>
+
+    <div class="modalBackground visible" id="modalBackground"></div>
+    <div class="modal-window visible" id="modalWindow">
+        <span class="modal-window__error" id="typeText"></span>
+        <button class="btn modal-window__close" id="close">Close</button>
+    </div>
+
+    <script src="./src/controllerSignin.js" ></script>
+    <script src="./src/users.js" ></script>
+    <script src="./src/viewSignin.js" ></script>
+    <script>
+        window.addEventListener('load', () => {
+            new SignInController(new SignInView());
+        });
+    </script>
+</body>
+</html>
