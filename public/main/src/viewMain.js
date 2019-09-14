@@ -6,13 +6,13 @@ const MainView = function () {
     this.users = document.getElementById("getUsers");
     this.chat = document.getElementById("getChat");
     this.content = document.getElementsByClassName("content")[0];
-    this.sendMessage = "";
-    this.inputMessage = "";
-    this.messageField = "";
+    this.sendMessage;
+    this.inputMessage;
+    this.messageField;
 
     this.drawAllUsers = (users) => {
         for (let i = 0; i < users.length; i++) {
-            this.content.innerHTML += `<div class="users__card"><p class="users__info">${users[i].name}</p><p class="users__info">${users[i].email}</p></div>`;
+            this.content.innerHTML += `<div class="users__card" id="${users[i]._id}"><p class="users__info">${users[i].name}</p><p class="users__info">${users[i].email}</p></div>`;
         }
     };
 
@@ -33,7 +33,8 @@ const MainView = function () {
     this.drawAllMessages = (messages) => {
         this.messageField = document.getElementsByClassName("massageField")[0];
         for (let i = 0; i < messages.length; i++) {
-            this.messageField.innerHTML += `<div class="massage"><p class="massage__name">${messages[i].name}</p><p class="massage__email">${messages[i].email}</p><span class="massage__text">${messages[i].message}</span><p class="massage__time">${messages[i].date}</p></div>`;
+            const date = new Date(messages[i].date).toTimeString().slice(0, 8);
+            this.messageField.innerHTML += `<div class="massage"><p class="massage__name">${messages[i].name}</p><p class="massage__email">${messages[i].email}</p><span class="massage__text">${messages[i].message}</span><p class="massage__time">${date}</p></div>`;
         }
     };
 
@@ -57,11 +58,25 @@ const MainView = function () {
 
     this.drawDataUser = (user) => {
         console.log(user);
-        //this.accountName.innerHTML = user.name;
+        this.accountName.innerHTML = user.name;
         this.accountEmail.innerHTML = user.email;
     };
 
     this.goToLoginPage = () => {
         window.location.href = '/login/login.html';
     };
+
+    this.onlineDraw = (idOnline) => {
+        for (let i = 0; i < idOnline.length; i++) {
+            const userElement = document.getElementById(idOnline[i]);
+            console.log(userElement);
+            userElement.style.backgroundColor = "#000000";
+        }
+    };
+
+    this.offlineDraw = (idOffline) => {
+        const userElement = document.getElementById(idOffline);
+        console.log(userElement);
+        userElement.style.backgroundColor = "#cccccc";
+    }
 };

@@ -47,4 +47,8 @@ UsersDaoMongoDB.prototype.readUser = async function(email, password) {
     return await this.model.findOne({ email, password });
 };
 
+UsersDaoMongoDB.prototype.readUserToId = async function(id) {
+    return await this.model.find({ _id: id });
+};
+
 module.exports = UsersDaoMongoDB;

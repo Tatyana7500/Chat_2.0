@@ -1,25 +1,34 @@
 const MainModel = function () {
     this._users = [];
     this._messages = [];
-
+    this.socket = io.connect('http://localhost:3001/');
     const xhr = new XMLHttpRequest();
 
     this.getUsers = (onGetMessagesSuccess) => {
         sendGETRequest('/users', data => {
             this._users = JSON.parse(data);
             onGetMessagesSuccess(this._users);
+            this.online();
         });
     };
 
-    this.getMessages = (onGetMessagesSuccess) => {
-        const url = "/messages?chat=PUBLIC";
+    this.online = () => {
+        this.socket.emit('online');
+    };
+
+    this.getMessages = (onGetMessagesSuccess, chat, sender, receiver) => {
+        const url = `/messages?chat=${chat}&sender=${sender}&receiver=${receiver}`;
         sendGETRequest(url, data => {
             this._messages = JSON.parse(data);
             onGetMessagesSuccess(this._messages);
         });
     };
 
-    function sendGETRequest(url, callback) {
+    this.onlineUser = (id) => {
+        this.socket.emit('online', id);
+    };
+
+    async function sendGETRequest(url, callback) {
 
         xhr.open('GET', url, true);
         xhr.setRequestHeader("Content-type", "application/json");
@@ -36,10 +45,4 @@ const MainModel = function () {
     this.addMessages = (message) => {
         this.socket.emit('message', message);
     };
-
-    this.socket = io.connect('http://localhost:3001/');
-    this.socket.on('connect', function () { console.log("socket connected"); });
-    this.socket.on('message', this.func = (message) => {
-        this._messages.push(message);
-    });
 };

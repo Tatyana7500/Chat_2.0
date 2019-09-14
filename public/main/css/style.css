@@ -110,7 +110,7 @@ body {
 .users__info {
    flex: 1;
    text-align: center;
-   background-color: #397a94;
+   /*background-color: #397a94;*/
    color: white;
    padding: 10px;
 }

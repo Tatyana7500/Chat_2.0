@@ -51,5 +51,28 @@ ChatDAL.prototype.read = async function (user) {
 ChatDAL.prototype.readUser = async function (email, password) {
     return await this.usersDAO.readUser(email, password);
 };
+ChatDAL.prototype.readUserToId = async function (id) {
+    return await this.usersDAO.readUserToId(id);
+};
+ChatDAL.prototype.mergeMessageAndUser = function (messages, users) {
+    const chat = [];
+
+    for (let i = 0; i < messages.length; i++) {
+        for (let j = 0; j < users.length; j++) {
+            if(users[j]._id == messages[i].sender) {
+                const message = {
+                    message: messages[i].message,
+                    date: messages[i].date,
+                    name: users[j].name,
+                    email: users[j].email
+                };
+
+                chat.push(message);
+            }
+        }
+    }
+
+    return chat;
+};
 
 module.exports = ChatDAL;

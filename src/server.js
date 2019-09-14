@@ -12,34 +12,65 @@ app.use(express.json());
 const server = app.listen(3001);
 const io = socket(server);
 
-io.sockets.on('connection', handleConnection);
-
 const chatDal = new ChatDAL();
 chatDal.initialize();
 
-function handleConnection(socket) {
-    console.log("connect yes");
+let idOnline = [];
+let users = {};
+
+io.sockets.on('connection', function(socket){
     socket.on(constants.MESSAGE, handleMessage);
-}
+
+    socket.on(constants.ONLINE, (idUser) => {
+        if (idUser) {
+            users[socket.id] = idUser;
+            idOnline.push(idUser);
+        }
+
+        io.sockets.emit(constants.ONLINE, idOnline);
+    });
+
+    socket.on(constants.DISCONNECT, () => {
+        const index = idOnline.indexOf(users[socket.id]);
+
+        if (index >= 0) {
+            idOnline.splice( index, 1 );
+        }
+
+        io.sockets.emit(constants.OFFLINE, users[socket.id]);
+    });
+});
 
 async function handleMessage(message) {
     await chatDal.createMessage(message);
-    io.sockets.emit(constants.MESSAGE, message);
-    console.log("message handle", message);
+    const user = await chatDal.readUserToId(message.sender);
+
+    const oneMessage = {
+        message: message.message,
+        date: message.date,
+        name: user[0].name,
+        email: user[0].email
+    };
+
+    io.sockets.emit(constants.MESSAGE, oneMessage);
 }
 
 app.post('/message', jsonParser, async (request, res) => {
     await chatDal.createMessage(request.body);
     io.sockets.emit(constants.MESSAGE, request.body);
-    console.log("message handle", request.body);
+
     res.status(200).send('OK');
 });
 
 app.post('/auth', jsonParser, async (request, res) => {
-    const {email, password} = request.body;
-    console.log(email, password);
-    const user = await chatDal.readUser(email, password);
-    res.status(200).send(user);
+    try {
+        const {email, password} = request.body;
+        const user = await chatDal.readUser(email, password);
+        res.status(200).send(user);
+    } catch (e) {
+        res.status(403).send(e.message);
+    }
+
 });
 
 app.post('/signin', jsonParser, async (request, res) => {
@@ -53,13 +84,13 @@ app.post('/signin', jsonParser, async (request, res) => {
 
 app.get('/users', async (request, res) => {
     const users = await chatDal.readAllUsers();
-    console.log('readAllUser', users);
+
     res.status(200).send(users);
 });
 
 app.get('/messages', async (request, res) => {
     const {sender, receiver, chat} = request.query;
-    console.log(sender, receiver, chat);
+    let users = await  chatDal.readAllUsers();
     let messages = [];
 
     if (chat === 'PUBLIC') {
@@ -68,5 +99,5 @@ app.get('/messages', async (request, res) => {
         messages = await chatDal.readPrivateMessages(sender, receiver);
     }
 
-    res.status(200).send(messages);
+    res.status(200).send(chatDal.mergeMessageAndUser(messages, users));
 });
