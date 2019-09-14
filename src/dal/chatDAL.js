@@ -30,11 +30,14 @@ ChatDAL.prototype.createUsersDAO = function() {
             throw new Error('unknown databaseType');
     }
 };
-ChatDAL.prototype.readAllMessages = async function () {
-    return await this.messagesDAO.readAll();
+ChatDAL.prototype.readPublicMessages = async function () {
+    return await this.messagesDAO.readByReceiver("ALL");
+};
+ChatDAL.prototype.readPrivateMessages = async function (sender, receiver) {
+    return await this.messagesDAO.readBySenderAndReceiver(sender, receiver);
 };
 ChatDAL.prototype.createMessage = async function (message) {
-    await this.messageDAO.create(message);
+    await this.messagesDAO.create(message);
 };
 ChatDAL.prototype.readAllUsers = async function () {
     return await this.usersDAO.readAll()
@@ -44,6 +47,9 @@ ChatDAL.prototype.createUser = async function (user) {
 };
 ChatDAL.prototype.read = async function (user) {
     return await this.usersDAO.read(user);
+};
+ChatDAL.prototype.readUser = async function (email, password) {
+    return await this.usersDAO.readUser(email, password);
 };
 
 module.exports = ChatDAL;

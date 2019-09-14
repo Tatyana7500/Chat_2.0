@@ -27,7 +27,7 @@ const MainController = function (model, view) {
     };
 
     function getMessageData() {
-        return new Messages(_view.accountName.innerHTML, _view.accountEmail.innerHTML, _view.inputMessage.value, new Date().toISOString().split('T')[0]);
+        return new Messages(_view.inputMessage.value, "kolya", "ALL", 100);
     }
 
     _view.content.addEventListener('click',  addListener);

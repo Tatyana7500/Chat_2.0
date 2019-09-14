@@ -7,10 +7,6 @@ const jsonParser = bodyParser.json();
 
 const app = express();
 app.use(express.static('public'));
-app.use(express.static('login'));
-app.use(express.static('signin'));
-app.use(express.static('main'));
-app.use(express.static('src'));
 app.use(express.json());
 
 const server = app.listen(3001);
@@ -26,30 +22,23 @@ function handleConnection(socket) {
     socket.on(constants.MESSAGE, handleMessage);
 }
 
-function handleMessage(message) {
-    switch (message.type) {
-        case constants.MESSAGE:
-            io.sockets.emit(constants.MESSAGE, message);
-            break;
-        default:
-            console.log('unknown message type');
-    }
+async function handleMessage(message) {
+    await chatDal.createMessage(message);
+    io.sockets.emit(constants.MESSAGE, message);
+    console.log("message handle", message);
 }
 
-const users = [
-    { name: 'kat', email: 'vasia@gmail.com', password: '123abc'},
-    { name: 'kat', email: 'patya@gmail.com', password: '453'},
-    { name: 'kat', email: 'masha@gmail.com', password: 'ggggg'},
-];
-
-const messages=[
-    { date: '15.02.2019', email: 'vasia@gmail.com', message: 'rrr', name: 'kat'},
-    { date: '19.05.2019', email: 'patya@gmail.com', message: '555', name: 'kat'},
-    { date: '23.02.2017', email: 'masha@gmail.com', message: '6ggdg', name: 'kat'},
-];
+app.post('/message', jsonParser, async (request, res) => {
+    await chatDal.createMessage(request.body);
+    io.sockets.emit(constants.MESSAGE, request.body);
+    console.log("message handle", request.body);
+    res.status(200).send('OK');
+});
 
 app.post('/auth', jsonParser, async (request, res) => {
-    const user = await chatDal.read(request.body);
+    const {email, password} = request.body;
+    console.log(email, password);
+    const user = await chatDal.readUser(email, password);
     res.status(200).send(user);
 });
 
@@ -69,5 +58,15 @@ app.get('/users', async (request, res) => {
 });
 
 app.get('/messages', async (request, res) => {
+    const {sender, receiver, chat} = request.query;
+    console.log(sender, receiver, chat);
+    let messages = [];
+
+    if (chat === 'PUBLIC') {
+        messages = await chatDal.readPublicMessages();
+    } else if (chat === "PRIVATE"){
+        messages = await chatDal.readPrivateMessages(sender, receiver);
+    }
+
     res.status(200).send(messages);
 });

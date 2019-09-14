@@ -12,7 +12,8 @@ const MainModel = function () {
     };
 
     this.getMessages = (onGetMessagesSuccess) => {
-        sendGETRequest('/messages', data => {
+        const url = "/messages?chat=PUBLIC";
+        sendGETRequest(url, data => {
             this._messages = JSON.parse(data);
             onGetMessagesSuccess(this._messages);
         });

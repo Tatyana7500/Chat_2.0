@@ -43,8 +43,8 @@ UsersDaoMongoDB.prototype.readAll = async function() {
      return await this.model.find({});
 };
 
-UsersDaoMongoDB.prototype.read = async function({ email, password }) {
-    return await this.model.find({ email, password });
+UsersDaoMongoDB.prototype.readUser = async function(email, password) {
+    return await this.model.findOne({ email, password });
 };
 
 module.exports = UsersDaoMongoDB;

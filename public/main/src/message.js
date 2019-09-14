@@ -1,9 +1,6 @@
-const Messages = function (name, email, message, date, sender, receiver) {
-    this.name = name;
-    this.email = email;
+const Messages = function (message, sender, receiver, date) {
     this.message = message;
     this.date = date;
     this.sender = sender;
     this.receiver = receiver;
-    this.type = "message";
 };
