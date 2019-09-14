@@ -8,10 +8,9 @@ const userSchema = new mongoose.Schema({
     password: { type: String, required: true },
 });
 
-let User;
-
 function UsersDaoMongoDB() {
     this.connection = null;
+    this.model = null;
 }
 
 UsersDaoMongoDB.prototype = Object.create(DAO.prototype);
@@ -27,7 +26,7 @@ UsersDaoMongoDB.prototype.initialize = function () {
     mongoose.createConnection(url)
         .then(connection => {
             this.connection = connection;
-            User = connection.model('user', userSchema);
+            this.model = connection.model('user', userSchema);
         })
         .catch((error) => {
             console.log(error);
@@ -35,17 +34,17 @@ UsersDaoMongoDB.prototype.initialize = function () {
 };
 
 UsersDaoMongoDB.prototype.create = async function (object) {
-    const user = new User(object);
+    const user = this.model(object);
     await user.save();
     console.log('saved', user);
 };
 
 UsersDaoMongoDB.prototype.readAll = async function() {
-     return await User.find({});
+     return await this.model.find({});
 };
 
 UsersDaoMongoDB.prototype.read = async function({ email, password }) {
-    return await User.find({ email, password });
+    return await this.model.find({ email, password });
 };
 
 module.exports = UsersDaoMongoDB;
