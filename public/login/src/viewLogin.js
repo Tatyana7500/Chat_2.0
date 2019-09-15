@@ -1,5 +1,4 @@
 const LoginView = function () {
-
     this.emailInput = document.getElementById("loginPageEmailInput");
     this.passwordInput = document.getElementById("loginPagePasswordInput");
     this.modalBackground = document.getElementById("modalBackground");
@@ -20,6 +19,7 @@ const LoginView = function () {
     };
 
     this.handleAuthSuccess = (data) => {
+        localStorage.setItem("chat", data);
         window.location.href = '/main/main.html';
     }
 };

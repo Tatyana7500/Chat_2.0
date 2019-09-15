@@ -69,7 +69,6 @@ app.post('/auth', jsonParser, async (request, res) => {
     } catch (e) {
         res.status(403).send(e.message);
     }
-
 });
 
 app.post('/signin', jsonParser, async (request, res) => {

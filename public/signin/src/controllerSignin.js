@@ -18,7 +18,6 @@ const SignInController = function (view) {
         xhr.onreadystatechange = function() {
             if (xhr.readyState === 4) {
                 if (xhr.status === 201) {
-                    console.log(xhr.responseText);
                     onSuccess(xhr.responseText);
                 } else {
                     onError(xhr.responseText);

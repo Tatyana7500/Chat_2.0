@@ -1,5 +1,4 @@
 const MainView = function () {
-
     this.accountName = document.getElementsByClassName("info__name")[0];
     this.accountEmail = document.getElementsByClassName("info__email")[0];
     this.logOut = document.getElementById("logOut");
@@ -57,7 +56,6 @@ const MainView = function () {
     };
 
     this.drawDataUser = (user) => {
-        console.log(user);
         this.accountName.innerHTML = user.name;
         this.accountEmail.innerHTML = user.email;
     };
@@ -69,14 +67,12 @@ const MainView = function () {
     this.onlineDraw = (idOnline) => {
         for (let i = 0; i < idOnline.length; i++) {
             const userElement = document.getElementById(idOnline[i]);
-            console.log(userElement);
             userElement.style.backgroundColor = "#000000";
         }
     };
 
     this.offlineDraw = (idOffline) => {
         const userElement = document.getElementById(idOffline);
-        console.log(userElement);
         userElement.style.backgroundColor = "#cccccc";
     }
 };

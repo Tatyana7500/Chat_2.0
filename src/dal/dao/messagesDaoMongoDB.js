@@ -30,14 +30,13 @@ MessagesDaoMongoDB.prototype.initialize = function () {
             this.model = connection.model('message', messageSchema);
         })
         .catch((error) => {
-            console.log(error);
+            console.error(error);
         });
 };
 
 MessagesDaoMongoDB.prototype.create = async function (object) {
     const message = this.model(object);
     await message.save();
-    console.log('saved', message);
 };
 
 MessagesDaoMongoDB.prototype.readByReceiver = async function(receiver) {

@@ -21,9 +21,10 @@ const MainController = function (model, view) {
     });
 
     this.init = () => {
-        const user = JSON.parse(localStorage.getItem('chat'));
+        const userData = localStorage.getItem('chat');
 
-        if (user) {
+        if (userData) {
+            const user = JSON.parse(userData);
             idUserSender = user._id;
             _view.drawDataUser(user);
             _model.getUsers(_view.drawInitUsers);

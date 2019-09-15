@@ -15,12 +15,10 @@ const LoginController = function (view) {
 
     function sendPostRequest(url, data, onSuccess, onError) {
         const xhr = new XMLHttpRequest();
-        console.log(data);
 
         xhr.onreadystatechange = function() {
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
-                    localStorage.setItem("chat", xhr.responseText);
                     onSuccess(xhr.responseText);
                 } else {
                     onError(xhr.responseText);
