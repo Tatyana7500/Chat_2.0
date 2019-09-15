@@ -15,29 +15,28 @@ const io = socket(server);
 const chatDal = new ChatDAL();
 chatDal.initialize();
 
-let idOnline = [];
 let users = {};
 
 io.sockets.on('connection', function(socket){
     socket.on(constants.MESSAGE, handleMessage);
 
     socket.on(constants.ONLINE, (idUser) => {
+        let idOnline = [];
+
         if (idUser) {
             users[socket.id] = idUser;
-            idOnline.push(idUser);
+        }
+
+        for (let key in users) {
+            idOnline.push(users[key]);
         }
 
         io.sockets.emit(constants.ONLINE, idOnline);
     });
 
     socket.on(constants.DISCONNECT, () => {
-        const index = idOnline.indexOf(users[socket.id]);
-
-        if (index >= 0) {
-            idOnline.splice( index, 1 );
-        }
-
         io.sockets.emit(constants.OFFLINE, users[socket.id]);
+        delete users[socket.id];
     });
 });
 
