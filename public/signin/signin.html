@@ -43,12 +43,12 @@
         <button class="btn modal-window__close" id="close">Close</button>
     </div>
 
-    <script src="./src/controllerSignin.js" ></script>
-    <script src="./src/users.js" ></script>
-    <script src="./src/viewSignin.js" ></script>
+    <script src="../utils/requestSender.js" ></script>
+    <script src="./src/signInController.js" ></script>
+    <script src="./src/signInView.js" ></script>
     <script>
         window.addEventListener('load', () => {
-            new SignInController(new SignInView());
+            new SignInController(new SignInView()).init();
         });
     </script>
 </body>

@@ -39,15 +39,27 @@ UsersDaoMongoDB.prototype.create = async function (object) {
 };
 
 UsersDaoMongoDB.prototype.readAll = async function() {
-     return await this.model.find({});
+     const data = await this.model.find({});
+     return data.map(item => ({
+         ...item._doc,
+         id: item._id.toString(),
+     }));
 };
 
 UsersDaoMongoDB.prototype.readUser = async function(email, password) {
-    return await this.model.findOne({ email, password });
+    const data = await this.model.findOne({ email, password });
+    return {
+        ...data._doc,
+        id: data._id.toString(),
+    };
 };
 
-UsersDaoMongoDB.prototype.readUserToId = async function(id) {
-    return await this.model.find({ _id: id });
+UsersDaoMongoDB.prototype.readUserById = async function(id) {
+    const data = await this.model.findOne({ _id: id });
+    return {
+        ...data._doc,
+        id: data._id.toString(),
+    };
 };
 
 module.exports = UsersDaoMongoDB;
