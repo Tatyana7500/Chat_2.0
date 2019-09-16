@@ -5,6 +5,7 @@ const MainView = function () {
     this.users = document.getElementById("getUsers");
     this.chat = document.getElementById("getChat");
     this.content = document.getElementsByClassName("content")[0];
+    this.loader = document.getElementById("preloader");
     this.sendMessage;
     this.inputMessage;
     this.messageField;
@@ -30,16 +31,23 @@ const MainView = function () {
 
     this.drawAllMessages = (messages) => {
         this.messageField = document.getElementsByClassName("massageField")[0];
-
+        
         for (let i = 0; i < messages.length; i++) {
             const date = new Date(parseInt(messages[i].date)).toTimeString().slice(0, 8);
 
             if (this.accountName.innerHTML === messages[i].name) {
                 this.messageField.innerHTML += `<div class="massage massageSender"><p class="massage__name">${messages[i].name}</p><p class="massage__email">${messages[i].email}</p><span class="massage__text">${messages[i].message}</span><p class="massage__time">${date}</p></div>`;
+                this.scrollDown();
             } else {
                 this.messageField.innerHTML += `<div class="massage massageReceiver"><p class="massage__name">${messages[i].name}</p><p class="massage__email">${messages[i].email}</p><span class="massage__text">${messages[i].message}</span><p class="massage__time">${date}</p></div>`;
+                this.scrollDown();
             }
         }
+    };
+
+    this.scrollDown = () => {
+        this.messageField = document.getElementsByClassName("massageField")[0];
+        this.messageField.scrollTop = this.messageField.scrollHeight - this.messageField.clientHeight;
     };
 
     this.reset = () => {

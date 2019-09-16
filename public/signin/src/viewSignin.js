@@ -1,5 +1,4 @@
 const SignInView = function () {
-
     this.sinInEmailInput = document.getElementById("singinPageEmailInput");
     this.singInNameInput = document.getElementById("singinPageNameInput");
     this.singInPasswordInput = document.getElementById("singinPagePasswordInput");

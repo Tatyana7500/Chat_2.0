@@ -5,7 +5,6 @@ const MainController = function (model, view) {
     let idUserReceiver = "ALL";
     this.socket = io.connect('http://localhost:3001/');
 
-
     _view.users.addEventListener('click', event => {
         _model.getUsers(_view.drawInitUsers);
     });
@@ -21,6 +20,7 @@ const MainController = function (model, view) {
     });
 
     this.init = () => {
+        loader();
         const userData = localStorage.getItem('chat');
 
         if (userData) {
@@ -33,21 +33,32 @@ const MainController = function (model, view) {
         }
 
         _model.onlineUser(idUserSender);
+
+        this.socket.on(idUserSender, (message) => {
+            if (idUserReceiver !== "ALL") {
+                _model._messages.push(message);
+                _view.drawInitMassage(_model._messages)
+            }
+        });
+
+        this.socket.on(idUserReceiver, (message) => {
+            if (idUserReceiver !== "ALL") {
+                _model._messages.push(message);
+                _view.drawInitMassage(_model._messages)
+            }
+        })
     };
 
-    _view.content.addEventListener('click',  addListener);
+    _view.content.addEventListener('click', addListener);
 
-    function addListener (event) {
+    function addListener(event) {
         if (event.target.className === 'btn footer__send') {
             const message = getMessageData();
             _model.addMessages(message);
-
-            setTimeout(() => {
-                _view.drawInitMassage(_model._messages);
-            }, 50);
-        } else if(event.target.className === 'users__info') {
+        } else if (event.target.className === 'users__info') {
             idUserReceiver = event.target.parentNode.id;
             _model.getMessages(_view.drawInitMassage, "PRIVATE", idUserSender, idUserReceiver);
+
         }
     }
 
@@ -64,8 +75,25 @@ const MainController = function (model, view) {
     });
 
     this.socket.on('message', (message) => {
-        console.log(message);
-        _model._messages.push(message);
-        _view.drawInitMassage(_model._messages)
-    })
+        if (idUserReceiver === "ALL") {
+            _model._messages.push(message);
+            _view.drawInitMassage(_model._messages)
+        }
+    });
+
+    function loadData() {
+        console.log(_view.loader);
+        return new Promise((resolve, reject) => {
+            setTimeout(resolve, 1000);
+        })
+    }
+
+    function loader() {
+        console.log(_view.loader);
+        loadData()
+            .then(() => {
+                _view.loader.classList.add('hidden');
+                _view.loader.classList.remove('visible');
+            });
+    }
 };

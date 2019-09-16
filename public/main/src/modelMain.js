@@ -31,13 +31,14 @@ const MainModel = function () {
     this.addMessages = (message) => {
         this.socket.emit('message', message);
     };
-
+    
     async function sendGETRequest(url, callback) {
 
         xhr.open('GET', url, true);
         xhr.setRequestHeader("Content-type", "application/json");
 
         xhr.onreadystatechange = function () {
+            
             if (xhr.readyState === 4 && xhr.status === 200) {
                 callback(xhr.responseText);
             }

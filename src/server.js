@@ -28,24 +28,15 @@ io.sockets.on('connection', function(socket){
             name: user[0].name,
             email: user[0].email
         };
-
+        
         if (message.receiver === 'ALL') {
             io.sockets.emit(constants.MESSAGE, oneMessage);
         } else {
-            let idSocket = 0;
-
-            for (let key in users) {
-                if (users[key] === message.receiver)
-                    idSocket = key;
-            }
-            console.log(idSocket);
-
-            //socket.connected[idSocket].emit(constants.MESSAGE, oneMessage);
-            io.sockets.to(socket[idSocket]).emit(constants.MESSAGE, oneMessage);
-            //io.sockets.socket.idSocket.emit(constants.MESSAGE, oneMessage);
+            io.sockets.emit(message.receiver, oneMessage);
+            io.sockets.emit(message.sender, oneMessage);
         }
     });
-
+        
     socket.on(constants.ONLINE, (idUser) => {
         let idOnline = [];
 
@@ -56,7 +47,7 @@ io.sockets.on('connection', function(socket){
         for (let key in users) {
             idOnline.push(users[key]);
         }
-
+        
         io.sockets.emit(constants.ONLINE, idOnline);
     });
 
@@ -69,7 +60,6 @@ io.sockets.on('connection', function(socket){
 app.post('/message', jsonParser, async (request, res) => {
     await chatDal.createMessage(request.body);
     io.sockets.emit(constants.MESSAGE, request.body);
-
     res.status(200).send('OK');
 });
 

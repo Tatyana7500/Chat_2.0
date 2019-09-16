@@ -1,7 +1,7 @@
 const constants = require('./constants');
 
 module.exports = {
-    databaseType: constants.POSTGRES,
+    databaseType: constants.MONGO,
     settings: {
         mongo: {
             connectionString: 'mongodb://localhost:27017',
@@ -9,7 +9,7 @@ module.exports = {
         postgres: {
             connectionPostgres: {
                 user: "postgres",
-                password: "knopka",
+                password: "qazxsw01",
                 host: "localhost",
                 port: 5432,
                 database: "chatDB"
