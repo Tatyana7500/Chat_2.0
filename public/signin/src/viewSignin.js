@@ -20,8 +20,4 @@ const SignInView = function () {
             this.modalWindow.classList.toggle("visible");
         }
     };
-
-    this.handleAuthSuccess = () => {
-        window.location.href = '/login/login.html';
-    };
 };

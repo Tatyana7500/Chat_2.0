@@ -12,10 +12,6 @@ const MainModel = function () {
         });
     };
 
-    this.online = () => {
-        this.socket.emit('online');
-    };
-
     this.getMessages = (onGetMessagesSuccess, chat, sender, receiver) => {
         const url = `/messages?chat=${chat}&sender=${sender}&receiver=${receiver}`;
         sendGETRequest(url, data => {
@@ -26,6 +22,14 @@ const MainModel = function () {
 
     this.onlineUser = (id) => {
         this.socket.emit('online', id);
+    };
+
+    this.online = () => {
+        this.socket.emit('online');
+    };
+
+    this.addMessages = (message) => {
+        this.socket.emit('message', message);
     };
 
     async function sendGETRequest(url, callback) {
@@ -41,8 +45,4 @@ const MainModel = function () {
 
         xhr.send();
     }
-
-    this.addMessages = (message) => {
-        this.socket.emit('message', message);
-    };
 };

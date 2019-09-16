@@ -17,26 +17,23 @@ const MainController = function (model, view) {
 
     _view.logOut.addEventListener('click', event => {
         localStorage.removeItem('chat');
-        _view.goToLoginPage();
+        window.location.href = '/login/login.html';
     });
 
     this.init = () => {
-        const user = JSON.parse(localStorage.getItem('chat'));
+        const userData = localStorage.getItem('chat');
 
-        if (user) {
+        if (userData) {
+            const user = JSON.parse(userData);
             idUserSender = user._id;
             _view.drawDataUser(user);
             _model.getUsers(_view.drawInitUsers);
         } else {
-            _view.goToLoginPage();
+            window.location.href = '/login/login.html';
         }
 
         _model.onlineUser(idUserSender);
     };
-
-    function getMessageData() {
-        return new Messages(_view.inputMessage.value, idUserSender, idUserReceiver, new Date().getTime());
-    }
 
     _view.content.addEventListener('click',  addListener);
 
@@ -54,6 +51,10 @@ const MainController = function (model, view) {
         }
     }
 
+    function getMessageData() {
+        return new Messages(_view.inputMessage.value, idUserSender, idUserReceiver, new Date().getTime());
+    }
+
     this.socket.on('online', (idOnline) => {
         _view.onlineDraw(idOnline);
     });
@@ -63,6 +64,7 @@ const MainController = function (model, view) {
     });
 
     this.socket.on('message', (message) => {
+        console.log(message);
         _model._messages.push(message);
         _view.drawInitMassage(_model._messages)
     })

@@ -29,14 +29,13 @@ UsersDaoMongoDB.prototype.initialize = function () {
             this.model = connection.model('user', userSchema);
         })
         .catch((error) => {
-            console.log(error);
+            console.error(error);
         });
 };
 
 UsersDaoMongoDB.prototype.create = async function (object) {
     const user = this.model(object);
     await user.save();
-    console.log('saved', user);
 };
 
 UsersDaoMongoDB.prototype.readAll = async function() {

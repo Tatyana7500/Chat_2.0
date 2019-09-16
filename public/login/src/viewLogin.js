@@ -1,5 +1,4 @@
 const LoginView = function () {
-
     this.emailInput = document.getElementById("loginPageEmailInput");
     this.passwordInput = document.getElementById("loginPagePasswordInput");
     this.modalBackground = document.getElementById("modalBackground");
@@ -18,8 +17,4 @@ const LoginView = function () {
             this.modalWindow.classList.toggle("visible");
         };
     };
-
-    this.handleAuthSuccess = (data) => {
-        window.location.href = '/main/main.html';
-    }
 };

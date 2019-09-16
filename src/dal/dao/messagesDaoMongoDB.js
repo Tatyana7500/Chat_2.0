@@ -30,14 +30,13 @@ MessagesDaoMongoDB.prototype.initialize = function () {
             this.model = connection.model('message', messageSchema);
         })
         .catch((error) => {
-            console.log(error);
+            console.error(error);
         });
 };
 
 MessagesDaoMongoDB.prototype.create = async function (object) {
     const message = this.model(object);
     await message.save();
-    console.log('saved', message);
 };
 
 MessagesDaoMongoDB.prototype.readByReceiver = async function(receiver) {
@@ -55,6 +54,7 @@ MessagesDaoMongoDB.prototype.readBySenderAndReceiver = async function(sender, re
 
 function dynamicSort(property) {
     let sortOrder = 1;
+
     if(property[0] === "-") {
         sortOrder = -1;
         property = property.substr(1);

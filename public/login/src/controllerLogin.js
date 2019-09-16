@@ -3,7 +3,7 @@ const LoginController = function (view) {
 
     _view.auth.addEventListener(`click`, () => {
         const data = getAuthData();
-        sendPostRequest('/auth', data, _view.handleAuthSuccess, _view.handleAuthError);
+        sendPostRequest('/auth', data, _view.handleAuthError);
     });
 
     function getAuthData() {
@@ -13,15 +13,14 @@ const LoginController = function (view) {
         };
     }
 
-    function sendPostRequest(url, data, onSuccess, onError) {
+    function sendPostRequest(url, data, onError) {
         const xhr = new XMLHttpRequest();
-        console.log(data);
 
         xhr.onreadystatechange = function() {
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
                     localStorage.setItem("chat", xhr.responseText);
-                    onSuccess(xhr.responseText);
+                    window.location.href = '/main/main.html';
                 } else {
                     onError(xhr.responseText);
                 }

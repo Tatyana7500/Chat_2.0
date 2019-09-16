@@ -1,5 +1,4 @@
 const MainView = function () {
-
     this.accountName = document.getElementsByClassName("info__name")[0];
     this.accountEmail = document.getElementsByClassName("info__email")[0];
     this.logOut = document.getElementById("logOut");
@@ -17,13 +16,12 @@ const MainView = function () {
     };
 
     this.usersInit = () => {
-        const drawUsers = `<div class="users__title"><div class="users__info">name</div><div class="users__info">e-mail</div></div>`;
+        const drawUsers = `<div class="users__title"><div class="users__header">name</div><div class="users__header">e-mail</div></div>`;
         this.content.innerHTML = drawUsers;
     };
 
     this.chatInit = () => {
         const drawChat = `<div class="massageField"></div><div class="footer"><textarea class="textMassage" placeholder="Your massage"></textarea><button id="footer__send" class="btn footer__send">Send</button></div>`;
-
         this.content.innerHTML = drawChat;
         this.sendMessage = document.getElementsByClassName("footer__send")[0];
         this.inputMessage = document.getElementsByClassName("textMassage")[0];
@@ -32,9 +30,15 @@ const MainView = function () {
 
     this.drawAllMessages = (messages) => {
         this.messageField = document.getElementsByClassName("massageField")[0];
+
         for (let i = 0; i < messages.length; i++) {
-            const date = new Date(messages[i].date).toTimeString().slice(0, 8);
-            this.messageField.innerHTML += `<div class="massage"><p class="massage__name">${messages[i].name}</p><p class="massage__email">${messages[i].email}</p><span class="massage__text">${messages[i].message}</span><p class="massage__time">${date}</p></div>`;
+            const date = new Date(parseInt(messages[i].date)).toTimeString().slice(0, 8);
+
+            if (this.accountName.innerHTML === messages[i].name) {
+                this.messageField.innerHTML += `<div class="massage massageSender"><p class="massage__name">${messages[i].name}</p><p class="massage__email">${messages[i].email}</p><span class="massage__text">${messages[i].message}</span><p class="massage__time">${date}</p></div>`;
+            } else {
+                this.messageField.innerHTML += `<div class="massage massageReceiver"><p class="massage__name">${messages[i].name}</p><p class="massage__email">${messages[i].email}</p><span class="massage__text">${messages[i].message}</span><p class="massage__time">${date}</p></div>`;
+            }
         }
     };
 
@@ -57,26 +61,19 @@ const MainView = function () {
     };
 
     this.drawDataUser = (user) => {
-        console.log(user);
         this.accountName.innerHTML = user.name;
         this.accountEmail.innerHTML = user.email;
-    };
-
-    this.goToLoginPage = () => {
-        window.location.href = '/login/login.html';
     };
 
     this.onlineDraw = (idOnline) => {
         for (let i = 0; i < idOnline.length; i++) {
             const userElement = document.getElementById(idOnline[i]);
-            console.log(userElement);
-            userElement.style.backgroundColor = "#000000";
+            userElement.style.backgroundColor = "#48d211";
         }
     };
 
     this.offlineDraw = (idOffline) => {
         const userElement = document.getElementById(idOffline);
-        console.log(userElement);
-        userElement.style.backgroundColor = "#cccccc";
+        userElement.style.backgroundColor = "#f83c87";
     }
 };

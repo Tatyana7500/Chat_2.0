@@ -18,7 +18,33 @@ chatDal.initialize();
 let users = {};
 
 io.sockets.on('connection', function(socket){
-    socket.on(constants.MESSAGE, handleMessage);
+    socket.on(constants.MESSAGE, async (message) => {
+        await chatDal.createMessage(message);
+        const user = await chatDal.readUserToId(message.sender);
+
+        const oneMessage = {
+            message: message.message,
+            date: message.date,
+            name: user[0].name,
+            email: user[0].email
+        };
+
+        if (message.receiver === 'ALL') {
+            io.sockets.emit(constants.MESSAGE, oneMessage);
+        } else {
+            let idSocket = 0;
+
+            for (let key in users) {
+                if (users[key] === message.receiver)
+                    idSocket = key;
+            }
+            console.log(idSocket);
+
+            //socket.connected[idSocket].emit(constants.MESSAGE, oneMessage);
+            io.sockets.to(socket[idSocket]).emit(constants.MESSAGE, oneMessage);
+            //io.sockets.socket.idSocket.emit(constants.MESSAGE, oneMessage);
+        }
+    });
 
     socket.on(constants.ONLINE, (idUser) => {
         let idOnline = [];
@@ -40,20 +66,6 @@ io.sockets.on('connection', function(socket){
     });
 });
 
-async function handleMessage(message) {
-    await chatDal.createMessage(message);
-    const user = await chatDal.readUserToId(message.sender);
-
-    const oneMessage = {
-        message: message.message,
-        date: message.date,
-        name: user[0].name,
-        email: user[0].email
-    };
-
-    io.sockets.emit(constants.MESSAGE, oneMessage);
-}
-
 app.post('/message', jsonParser, async (request, res) => {
     await chatDal.createMessage(request.body);
     io.sockets.emit(constants.MESSAGE, request.body);
@@ -67,9 +79,8 @@ app.post('/auth', jsonParser, async (request, res) => {
         const user = await chatDal.readUser(email, password);
         res.status(200).send(user);
     } catch (e) {
-        res.status(403).send(e.message);
+        res.status(403).send("User not exist or password not correct");
     }
-
 });
 
 app.post('/signin', jsonParser, async (request, res) => {
@@ -77,13 +88,12 @@ app.post('/signin', jsonParser, async (request, res) => {
         await chatDal.createUser(request.body);
         res.status(200).send('OK');
     } catch (e) {
-        res.status(409).send(e.message);
+        res.status(409).send("User with this email is already registered");
     }
 });
 
 app.get('/users', async (request, res) => {
     const users = await chatDal.readAllUsers();
-
     res.status(200).send(users);
 });
 
