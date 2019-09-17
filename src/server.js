@@ -63,8 +63,6 @@ async function handleMessage(message) {
             socket && socket.emit(constants.MESSAGE, oneMessage);
         }
     }
-
-
 }
 
 app.post('/message', jsonParser, async (request, res) => {
