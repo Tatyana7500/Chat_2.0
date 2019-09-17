@@ -51,8 +51,8 @@ ChatDAL.prototype.read = async function (user) {
 ChatDAL.prototype.readUser = async function (email, password) {
     return await this.usersDAO.readUser(email, password);
 };
-ChatDAL.prototype.readUserToId = async function (id) {
-    return await this.usersDAO.readUserToId(id);
+ChatDAL.prototype.readUserById = async function (id) {
+    return await this.usersDAO.readUserById(id);
 };
 ChatDAL.prototype.mergeMessageAndUser = function (messages, users) {
     const chat = [];

@@ -15,43 +15,54 @@ const io = socket(server);
 const chatDal = new ChatDAL();
 chatDal.initialize();
 
-let users = {};
+const clients = [];
 
-io.sockets.on('connection', function(socket){
+io.sockets.on('connection', socket => {
+    const user = JSON.parse(socket.handshake.query.user);
+    clients.push({
+        ...user,
+        socketId: socket.id,
+    });
+
+    io.sockets.emit(constants.ONLINE, clients.map(client => client.id));
+
     socket.on(constants.MESSAGE, handleMessage);
-
-    socket.on(constants.ONLINE, (idUser) => {
-        let idOnline = [];
-
-        if (idUser) {
-            users[socket.id] = idUser;
-        }
-
-        for (let key in users) {
-            idOnline.push(users[key]);
-        }
-
-        io.sockets.emit(constants.ONLINE, idOnline);
-    });
-
-    socket.on(constants.DISCONNECT, () => {
-        io.sockets.emit(constants.OFFLINE, users[socket.id]);
-        delete users[socket.id];
-    });
+    socket.on(constants.DISCONNECT, () => handleDisconnect(socket));
 });
+
+async function handleDisconnect(socket) {
+    const client = clients.find(item => item.socketId === socket.id);
+    const index = clients.indexOf(client);
+
+    if (index > -1) {
+        clients.splice(index, 1);
+        io.sockets.emit(constants.ONLINE, clients.map(client => client.id));
+    }
+}
 
 async function handleMessage(message) {
     await chatDal.createMessage(message);
-    const user = await chatDal.readUserToId(message.sender);
+    const { receiver } = message;
+    const { name, email, id } = await chatDal.readUserById(message.sender);
 
     const oneMessage = {
         message: message.message,
         date: message.date,
-        name: user[0].name,
-        email: user[0].email
+        name,
+        email,
     };
 
-    io.sockets.emit(constants.MESSAGE, oneMessage);
+    if (receiver === 'ALL') {
+        io.sockets.emit(constants.MESSAGE, oneMessage);
+    } else {
+        const socketIds = clients.filter(item => item.id === id || item.id === receiver)
+            .map(client => client.socketId);
+
+        for(let socketId of socketIds) {
+            const socket = io.sockets.connected[socketId];
+            socket && socket.emit(constants.MESSAGE, oneMessage);
+        }
+    }
 }
 
 app.post('/message', jsonParser, async (request, res) => {
